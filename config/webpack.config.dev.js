@@ -1,7 +1,9 @@
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
+const stylelint = require('stylelint');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
@@ -186,6 +188,18 @@ module.exports = {
       binaryPath: require('flow-bin'),
       quietSuccess: true,
       failOnError: true,
+    }),
+    new StyleLintPlugin({
+      // failOnError: true,
+      syntax: 'scss',
+      formatter: (reports) => {
+        const cleanedReports = reports.map((report) => {
+          report.deprecations = [];
+          return report;
+        });
+
+        return stylelint.formatters.string(cleanedReports);
+      },
     }),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.

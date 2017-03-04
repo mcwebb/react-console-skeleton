@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node scripts/start.js",
-    "prebuild": "flow check",
+    "prebuild": "yarn run test",
     "build": "node scripts/build.js",
+    "pretest": "flow check && stylelint src/*.scss src/**/*.scss src/**/**/*.scss",
     "test": "node scripts/test.js --env=jsdom"
   },
   "dependencies": {
@@ -56,6 +57,9 @@
     "sass-loader": "4.1.1",
     "strip-ansi": "3.0.1",
     "style-loader": "0.13.1",
+    "stylelint": "7.7.1",
+    "stylelint-config-primer": "^1.4.0",
+    "stylelint-webpack-plugin": "^0.7.0",
     "url-loader": "0.5.7",
     "webpack": "1.14.0",
     "webpack-dev-server": "1.16.2",
