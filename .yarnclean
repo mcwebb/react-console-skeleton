@@ -35,6 +35,7 @@ Gruntfile.js
 .documentup.json
 .yarn-metadata.json
 .*.yml
+!.svgo.yml
 *.yml
 
 # misc
