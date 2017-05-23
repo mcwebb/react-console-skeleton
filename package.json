@@ -60,7 +60,7 @@
     "sass-loader": "4.1.1",
     "strip-ansi": "3.0.1",
     "style-loader": "0.13.1",
-    "stylelint": "7.7.1",
+    "stylelint": "^7.10.1",
     "stylelint-config-primer": "^1.4.0",
     "stylelint-webpack-plugin": "^0.7.0",
     "url-loader": "0.5.7",
