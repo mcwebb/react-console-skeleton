@@ -46,7 +46,7 @@ class AppComponent extends Component {
             title="Console"
             hideHandler={this.toggleSidebar}
           >
-            {pages.map(page =>
+            {pages.filter(page => page.config.primary).map(page =>
               <Anchor
                 key={page.config.path}
                 // "index: true" must be passed for index link
