@@ -50,6 +50,7 @@ if (isSmokeTest) {
 }
 
 function setupCompiler(host, port, protocol) {
+  let compileStart = new Date();
   // "Compiler" is a low-level interface to Webpack.
   // It lets us listen to some events and provide our own custom messages.
   compiler = webpack(config, handleCompile);
@@ -59,6 +60,8 @@ function setupCompiler(host, port, protocol) {
   // bundle, so if you refresh, it'll wait instead of serving the old one.
   // "invalid" is short for "bundle invalidated", it doesn't imply any errors.
   compiler.plugin('invalid', () => {
+    compileStart = new Date();
+
     if (isInteractive) {
       clearConsole();
     }
@@ -83,6 +86,10 @@ function setupCompiler(host, port, protocol) {
 
     if (isSuccessful) {
       console.log(chalk.green('Compiled successfully!'));
+      let compilationDuration = ((
+        (new Date()).getTime() - compileStart.getTime()
+      ) / 1000).toFixed(1);
+      console.log(chalk.gray(`${compilationDuration} seconds`));
     }
 
     if (showInstructions) {
