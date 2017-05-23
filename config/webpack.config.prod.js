@@ -1,3 +1,4 @@
+const path = require('path');
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -171,6 +172,11 @@ module.exports = {
       // ** STOP ** Are you adding a new loader?
       // Remember to add the new extension(s) to the "url" loader exclusion list.
     ]
+  },
+  sassLoader: {
+    includePaths: [
+      path.resolve('./node_modules'),
+    ],
   },
 
   // We use PostCSS for autoprefixing only.

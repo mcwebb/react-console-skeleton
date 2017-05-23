@@ -1,3 +1,4 @@
+const path = require('path');
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 const stylelint = require('stylelint');
@@ -20,6 +21,31 @@ const publicPath = '/';
 const publicUrl = '';
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
+const noLint = process.env.NO_LINT;
+
+const esLintLoader = {
+  test: /\.(js|jsx)$/,
+  include: paths.appSrc,
+  loader: 'eslint',
+  query: {
+    cache: true,
+  },
+};
+
+const lintPlugins = noLint ? [] : [
+  new StyleLintPlugin({
+    // failOnError: true,
+    syntax: 'scss',
+    formatter: (reports) => {
+      const cleanedReports = reports.map((report) => {
+        report.deprecations = [];
+        return report;
+      });
+
+      return stylelint.formatters.string(cleanedReports);
+    },
+  }),
+];
 
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
@@ -85,13 +111,7 @@ module.exports = {
   module: {
     // First, run the linter.
     // It's important to do this before Babel processes the JS.
-    preLoaders: [
-      {
-        test: /\.(js|jsx)$/,
-        loader: 'eslint',
-        include: paths.appSrc,
-      }
-    ],
+    preLoaders: noLint ? [] : [ esLintLoader ],
     loaders: [
       // ** ADDING/UPDATING LOADERS **
       // The "url" loader handles all assets unless explicitly excluded.
@@ -159,6 +179,11 @@ module.exports = {
       // Remember to add the new extension(s) to the "url" loader exclusion list.
     ]
   },
+  sassLoader: {
+    includePaths: [
+      path.resolve('./node_modules'),
+    ],
+  },
 
   // We use PostCSS for autoprefixing only.
   postcss() {
@@ -173,7 +198,7 @@ module.exports = {
       }),
     ];
   },
-  plugins: [
+  plugins: lintPlugins.concat([
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
@@ -186,20 +211,9 @@ module.exports = {
     }),
     new FlowStatusWebpackPlugin({
       binaryPath: require('flow-bin'),
+      restartFlow: false,
       quietSuccess: true,
       failOnError: true,
-    }),
-    new StyleLintPlugin({
-      // failOnError: true,
-      syntax: 'scss',
-      formatter: (reports) => {
-        const cleanedReports = reports.map((report) => {
-          report.deprecations = [];
-          return report;
-        });
-
-        return stylelint.formatters.string(cleanedReports);
-      },
     }),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
@@ -215,7 +229,7 @@ module.exports = {
     // makes the discovery automatic so you don't have to restart.
     // See https://github.com/facebookincubator/create-react-app/issues/186
     new WatchMissingNodeModulesPlugin(paths.appNodeModules)
-  ],
+  ]),
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
   node: {
