@@ -36,6 +36,7 @@ const lintPlugins = noLint ? [] : [
   new StyleLintPlugin({
     // failOnError: true,
     syntax: 'scss',
+    cache: true,
     formatter: (reports) => {
       const cleanedReports = reports.map((report) => {
         report.deprecations = [];
