@@ -1,0 +1,21 @@
+$brand-color: #f02079;
+$brand-neutral-colors: (#4a90e2, #e28b4a, #501eb4, #6d5d68);
+$brand-accent-colors: (#94c954, #e2d94a);
+$brand-link-color: $brand-color;
+$brand-status-colors: (
+  critical: #ff4822,
+  error: #ff4822,
+  warning: #ffd602,
+  ok: #8cc800,
+  unknown: #a8a8a8,
+  disabled: #a8a8a8
+);
+$brand-grey-colors: (#333, #3b3b3b, #434343, #333);
+$button-secondary-color: nth($brand-neutral-colors, 4);
+
+@if not variable-exists(brand-graph-colors) {
+  $brand-graph-colors: ();
+  $brand-graph-colors: join($brand-graph-colors, $brand-accent-colors);
+  $brand-graph-colors: join($brand-graph-colors, $brand-neutral-colors);
+}
+$brand-font-family: Arial, sans-serif;

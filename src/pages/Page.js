@@ -10,3 +10,9 @@ export type PageProps = {
 export interface Page extends Component {
   props: PageProps;
 }
+
+export type PageConfig = {|
+  path: string,
+  title: string,
+  primary: boolean,
+|};

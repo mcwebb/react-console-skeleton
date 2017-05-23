@@ -3,11 +3,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
+import routes from './routes';
 import './index.scss';
 
 const eRoot = (
   <BrowserRouter>
-    <App />
+    <App routes={routes} />
   </BrowserRouter>
 );
 
