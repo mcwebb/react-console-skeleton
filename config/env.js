@@ -3,6 +3,12 @@
 
 const REACT_APP = /^REACT_APP_/i;
 
+const isStaging = (
+  process.env.WERCKER_DEPLOYTARGET_NAME
+  || process.env.WERCKER_GIT_BRANCH
+) === 'staging';
+const isProd = !isStaging && process.env.NODE_ENV === 'production';
+
 function getClientEnvironment(publicUrl) {
   const raw = Object
     .keys(process.env)
